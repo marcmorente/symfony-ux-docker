@@ -3,17 +3,17 @@
 root = true
 
 [*]
-indent_style = space
+indent_style = tab
 
 
 [*.{cs,js,sass,css,scss}]
-indent_size = 2
+indent_size = 4
 
 [*.json]
-indent_size = 2
+indent_size = 4
 
 [*.{html,twig}]
-indent_size = 2
+indent_size = 4
 
 [*.{php,yml,yaml}]
 indent_size = 4

@@ -10,3 +10,6 @@ import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
+
+//start the Boostrap JS framework from node_modules
+import 'bootstrap';
