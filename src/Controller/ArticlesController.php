@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticlesController extends AbstractController
 {
-    #[Route(path: '/articles', name: 'articles', methods: ['GET'])]
+    #[Route(path: '/todo', name: 'app_todo', methods: ['GET'])]
     public function list(): Response
     {
         return new Response('Welcome to Latte and Code ');
