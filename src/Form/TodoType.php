@@ -17,16 +17,15 @@ class TodoType extends AbstractType
         $builder
             ->add('task')
             //Add priority field as a select box with options from priority entity
-			->add('priority', EntityType::class, [
-				'class' => Priority::class,
-				'choice_label' => 'name',
-				'placeholder' => 'Select a priority',
-			])
-			//Add a button to submit the form
-			->add('save', SubmitType::class, [
-				'attr' => ['class' => 'btn btn-primary'],
-			])
-        ;
+            ->add('priority', EntityType::class, [
+                'class' => Priority::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select a priority',
+            ])
+            //Add a button to submit the form
+            ->add('save', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
