@@ -9,6 +9,16 @@ It consists of 3 containers:
 - `php`, the PHP-FPM container with the 8.2 version of PHP.
 - `db`, which is the MySQL database container with a **MySQL 8.0** image.
 
+## Requirements
+Make sure you have the latest versions of **Docker** and **Docker Compose** installed on your machine.
+
+## Before you start
+Make sure you have all web services stopped. If you are using LAMP—Linux, Apache, MySQL, PHP—, you can stop the services using the following command:
+
+```
+sudo service apache2 stop && sudo service mysql stop && sudo service php8.1-fpm stop
+```
+
 ## Installation
 To install this stack, follow these steps:
 
