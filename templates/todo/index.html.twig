@@ -28,8 +28,13 @@
                         <td>{{ todo.task }}</td>
                         <td>{{ todo.priority.name }}</td>
                         <td>{{ todo.createdAt|date('d-m-Y H:i:s') }}</td>
-                        <td>
-                            <a type="button" class="btn btn-primary btn-sm">Edit</a>
+                        <td data-controller="button">
+                            <a
+                                data-action="click->button#openModalFrame"
+                                data-src="{{ path('app_todo_edit', {id: todo.id}) }}"
+                                type="button" class="btn btn-primary btn-sm">
+                                Edit
+                            </a>
                             <a type="button" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>

@@ -49,4 +49,26 @@ class TodoController extends AbstractController
             'formTarget' => $request->headers->get('Turbo-Frame', '_top')
         ]);
     }
+
+    // Route to edit a todo
+    #[Route('/todo/{id}/edit', name: 'app_todo_edit')]
+    public function edit(Request $request, Todo $todo): Response
+    {
+        $form = $this->createForm(TodoType::class, $todo, [
+            'action' => $this->generateUrl('app_todo_edit', ['id' => $todo->getId()])
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $todoEntity = $form->getData();
+            $this->todoRepository->save($todoEntity, true);
+
+            return $this->redirectToRoute('app_todo');
+        }
+
+        return $this->render('components/form.html.twig', [
+            'form' => $form->createView(),
+            'formTarget' => $request->headers->get('Turbo-Frame', '_top')
+        ]);
+    }
 }
