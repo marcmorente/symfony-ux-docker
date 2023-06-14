@@ -3,14 +3,15 @@
 {% block title %}Hello TodoController!{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1>Todo App</h1>
-        <hr>
-        {{ form_start(form) }}
-        {{ form_end(form) }}
-        <!-- HTML to display the todos in a table. Use bootstrap 5. Check if todos is not empty -->
+    <div data-controller="todo" class="container mt-5">
+        <span class="h3">Todo App </span>
+        <button
+            data-controller="button" data-action="click->button#openModalFrame" data-src="{{ path('app_todo_form') }}"
+            class="btn btn-sm btn-primary mb-2 ms-2">
+            Add task
+        </button>
         {% if todos is not empty %}
-            <hr class="mt-5 mb-5">
+            <hr>
             <table class="table">
                 <thead>
                 <tr>
@@ -27,7 +28,6 @@
                         <td>{{ todo.task }}</td>
                         <td>{{ todo.priority.name }}</td>
                         <td>{{ todo.createdAt|date('d-m-Y H:i:s') }}</td>
-                        <!-- Add bootstrap buttons for edit and delete -->
                         <td>
                             <a type="button" class="btn btn-primary btn-sm">Edit</a>
                             <a type="button" class="btn btn-danger btn-sm">Delete</a>
@@ -38,4 +38,5 @@
             </table>
         {% endif %}
     </div>
+    {{ include('components/modal-frame.html.twig', {modalTitle: 'Add task', frameId: 'todo-form'}) }}
 {% endblock %}

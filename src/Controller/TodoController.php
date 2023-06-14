@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Todo;
 use App\Form\TodoType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TodoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,40 +12,39 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    //Add constructor and inject EntityManagerInterface
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
-    )
-    {
+        private readonly TodoRepository $todoRepository
+    ) {
     }
 
     #[Route('/todo', name: 'app_todo')]
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        //Create form TodoType with Todo entity
-        $form = $this->createForm(TodoType::class, new Todo());
+        //Get all todos from database
+        $todos = $this->todoRepository->findAll();
 
-        //Handle request from form submission and persist data to database
+        return $this->render('todo/index.html.twig', [
+            'todos' => $todos
+        ]);
+    }
+
+    #[Route('/todo/form', name: 'app_todo_form')]
+    public function form(Request $request): Response
+    {
+        $todoEntity = new Todo();
+        $form = $this->createForm(TodoType::class, $todoEntity);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //Get data from form
-            $todo = $form->getData();
-            //Set created_at field to current datetime
-            $todo->setCreatedAt(new \DateTimeImmutable());
-
-            //Persist data to database
-            $this->entityManager->persist($todo);
-            $this->entityManager->flush();
-            //Redirect to homepage
+            $todoEntity = $form->getData();
+            $todoEntity->setCreatedAt(new \DateTimeImmutable());
+            $this->todoRepository->save($todoEntity, true);
             return $this->redirectToRoute('app_todo');
         }
 
-        //Get all todos from database
-        $todos = $this->entityManager->getRepository(Todo::class)->findAll();
-
-        return $this->render('todo/index.html.twig', [
-            'todos' => $todos,
-            'form' => $form->createView()
+        return $this->render('components/form.html.twig', [
+            'form' => $form->createView(),
+            'formTarget' => $request->headers->get('Turbo-Frame', '_top')
         ]);
     }
 }
