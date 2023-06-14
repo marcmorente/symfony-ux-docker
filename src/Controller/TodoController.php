@@ -28,17 +28,19 @@ class TodoController extends AbstractController
         ]);
     }
 
-    #[Route('/todo/form', name: 'app_todo_form')]
-    public function form(Request $request): Response
+    #[Route('/todo/new', name: 'app_todo_new')]
+    public function new(Request $request): Response
     {
-        $todoEntity = new Todo();
-        $form = $this->createForm(TodoType::class, $todoEntity);
+        $form = $this->createForm(TodoType::class, new Todo(), [
+            'action' => $this->generateUrl('app_todo_new')
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $todoEntity = $form->getData();
             $todoEntity->setCreatedAt(new \DateTimeImmutable());
             $this->todoRepository->save($todoEntity, true);
+
             return $this->redirectToRoute('app_todo');
         }
 
